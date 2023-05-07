@@ -1,0 +1,22 @@
+.scoreboard {
+  display: flex;
+  flex-direction: row;
+}
+
+.frame {
+  width: 100px;
+  height: 100px;
+  border: 1px solid grey;
+}
+
+.pins {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.pins div {
+  width: 50%;
+  text-align: center;
+  border: 1px solid black;
+}
