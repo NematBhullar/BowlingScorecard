@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 function App() {
   let [frame, setFrame] = useState(1);
   let [roll, setRoll] = useState(1);
-  // let [playerScore, setPlayerScore] = useState(0);
-  const listButtons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  let [playerScore, setPlayerScore] = useState(0);
+  const listButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
   let [strike, setStrike] = useState(false);
@@ -26,7 +26,8 @@ function App() {
         let prevFrameNo = frame - 1;
         const prevFrame = document.getElementById('F' + prevFrameNo + 'score');
         prevFrame.value = prevFrame.value + currRoll.value;
-        prevFrame.innerText = prevFrame.value;
+        prevFrame.innerText = playerScore + prevFrame.value;
+        setPlayerScore(playerScore + prevFrame.value);
         setSpare(false);
       }
 
@@ -39,7 +40,9 @@ function App() {
           let strikeFrameNo = frame - 2;
           const strikeFrame = document.getElementById('F' + strikeFrameNo + 'score');
           strikeFrame.value = strikeFrame.value + currRoll.value;
-          strikeFrame.innerText = strikeFrame.value;
+          strikeFrame.innerText = playerScore + strikeFrame.value;
+          setPlayerScore(playerScore + strikeFrame.value);
+          setStrike(false);
         } 
         setPrevStrike(false);
       }
@@ -68,7 +71,6 @@ function App() {
       } else {
         setRoll(2);
       }
-      // document.getElementById('score').innerText = "Score: " + player1Score;
 
     // If it is the second roll of the frame
     } else if (roll === 2) {
@@ -86,14 +88,11 @@ function App() {
           let prevFrameNo = frame - 1;
           const prevFrame = document.getElementById('F' + prevFrameNo + 'score');
           prevFrame.value = prevFrame.value + currRoll.value;
-          prevFrame.innerText = prevFrame.value;
-          
-          setStrike(strike - 1);
-          if (strike === 0) {
-            prevFrame.innerText = prevFrame.value;
-          } 
+          prevFrame.innerText = playerScore + prevFrame.value
+          setPlayerScore(playerScore + prevFrame.value);
+          setStrike(false);
         }
-
+  
         // Update the current frame value
         let r1Val = parseInt(document.getElementById('F' + frame + 'r1').value);
         let r2Val = parseInt(document.getElementById('F' + frame + 'r2').value);
@@ -108,19 +107,25 @@ function App() {
 
         const frameScore = document.getElementById('F' + frame + 'score');
         frameScore.value = r1Val + r2Val;
-        
-        if (frame === 10) {
-          if (spare || strike) {
+
+        if (r1Val + r2Val === 10 || prevStrike || strike) {
+          if (frame === 10) {
             setRoll(3);
           } else {
-            frameScore.innerText = frameScore.value;
-            document.getElementById('thisframe').innerText = "End Game";
-            listButtons.map(ea => document.getElementById(ea).disabled = true);
+            setRoll(1);
+            setFrame(frame + 1);
           }
         } else {
-          frameScore.innerText = frameScore.value;
-          setRoll(1);
-          setFrame(frame + 1);
+          if (frame === 10) {
+            setPlayerScore(playerScore + frameScore.value);
+            document.getElementById('thisframe').innerText = "End Game";
+            listButtons.map(ea => document.getElementById(ea).disabled = true);
+          } else {
+            frameScore.innerText = playerScore + frameScore.value;
+            setPlayerScore(playerScore + frameScore.value);
+            setRoll(1);
+            setFrame(frame + 1);
+          }
         }
       }
 
@@ -129,14 +134,14 @@ function App() {
       currRoll.value = parseInt(e.target.value);
       currRoll.innerText = currRoll.value;
 
-      if (spare || strike) {
-        const frameScore = document.getElementById('F' + frame + 'score');
+      const frameScore = document.getElementById('F' + frame + 'score');
+      
+      if (spare || prevStrike || strike) {
         frameScore.value = frameScore.value + currRoll.value; 
-        frameScore.innerText = frameScore.value;
       }
 
-      const frameScore = document.getElementById('F' + frame + 'score');
-      frameScore.innerText = frameScore.value;
+      frameScore.innerText = playerScore + frameScore.value;
+      setPlayerScore(playerScore + frameScore.value);
       
       document.getElementById('thisframe').innerText = "End Game";
       listButtons.map(ea => document.getElementById(ea).disabled = true);
@@ -167,7 +172,7 @@ function App() {
             <div className='frame-score' value={0} id={'F' + 10 + 'score'} key={'F' + 10 + 'score'}></div>
           </div>
       </div>
-      <div id='score'></div>
+      <div id='score'>Score: {playerScore}</div>
       <div className='buttons'>
         {listButtons.map(ea => 
           <button value={ea} id={ea} key={ea} onClick={(e) => displayValue(e)}>{ea}</button>
