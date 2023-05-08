@@ -5,7 +5,6 @@ const PlayerBoard = () => {
   let [frame, setFrame] = useState(1);
   let [roll, setRoll] = useState(1);
   let [playerScore, setPlayerScore] = useState(0);
-  // let [rolls, setRolls] = useState([]);
   const listButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -112,7 +111,6 @@ const PlayerBoard = () => {
             setStrike(false);
           }
         }
-        
 
         // Update the current frame value
         let r1Val = parseInt(document.getElementById('F' + frame + 'r1').value);
