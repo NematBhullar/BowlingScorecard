@@ -4,7 +4,8 @@ import PlayerBoard from './PlayerBoard';
 
 function App() {
   return (
-    <div>
+    <div className='main-body'>
+      <h1>Bowling Scorecard</h1>
       <div><PlayerBoard/></div>
   </div>
   )

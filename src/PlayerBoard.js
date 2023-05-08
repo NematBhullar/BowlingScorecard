@@ -128,7 +128,7 @@ const PlayerBoard = () => {
           if (frame === 10) {
             frameScore.innerText = playerScore + frameScore.value;
             setPlayerScore(playerScore + frameScore.value);
-            document.getElementById('thisframe').innerText = "End Game";
+            document.getElementById('thisframe').innerText = "End Game. You scored " + frameScore.innerText + ".";
             listButtons.map(ea => document.getElementById(ea).disabled = true);
           
           } else {
@@ -140,6 +140,7 @@ const PlayerBoard = () => {
         }
       }
 
+      // If this is the additional roll in the last frame 
     } else {
       const currRoll = document.getElementById('F' + frame + 'r3');
       currRoll.value = parseInt(e.target.value);
@@ -154,36 +155,35 @@ const PlayerBoard = () => {
       frameScore.innerText = playerScore + frameScore.value;
       setPlayerScore(playerScore + frameScore.value);
       
-      document.getElementById('thisframe').innerText = "End Game";
+      document.getElementById('thisframe').innerText = "End Game. You scored " + frameScore.innerText + ".";
       listButtons.map(ea => document.getElementById(ea).disabled = true);
     }
   }
 
   return (
     <div>
-      <div id='thisframe'></div>
+      <div id='thisframe' className='message-box'></div>
       <div id='scoreboard' className='scoreboard'>
         {frames.map(ea => 
           <div value={0} id={'F' + ea} key={'F' + ea} className='frame'>
             {ea}
             <div className='pins'>
-              <div id={'F' + ea + 'r1'}></div>
-              <div id={'F' + ea + 'r2'}></div>
+              <div id={'F' + ea + 'r1'} className='roll1'>&nbsp;</div>
+              <div id={'F' + ea + 'r2'} className='roll2'>&nbsp;</div>
             </div>
             <div className='frame-score' value={0} id={'F' + ea + 'score'} key={'F' + ea + 'score'}></div>
           </div>
         )}
-        <div value={0} id={'F' + 10} key={'F' + 10} className='frame'>
+        <div value={0} id={'F' + 10} key={'F' + 10} className='frame10'>
             {10}
             <div className='pins'>
-              <div id={'F' + 10 + 'r1'}></div>
-              <div id={'F' + 10 + 'r2'}></div>
-              <div id={'F' + 10 + 'r3'}></div>
+              <div id={'F' + 10 + 'r1'} className='roll1'>&nbsp;</div>
+              <div id={'F' + 10 + 'r2'} className='roll2'>&nbsp;</div>
+              <div id={'F' + 10 + 'r3'} className='roll3'>&nbsp;</div>
             </div>
             <div className='frame-score' value={0} id={'F' + 10 + 'score'} key={'F' + 10 + 'score'}></div>
           </div>
       </div>
-      <div id='score'>Score: {playerScore}</div>
       <div className='buttons'>
         {listButtons.map(ea => 
           <button value={ea} id={ea} key={ea} onClick={(e) => displayValue(e)}>{ea}</button>
