@@ -5,6 +5,7 @@ const PlayerBoard = () => {
   let [frame, setFrame] = useState(1);
   let [roll, setRoll] = useState(1);
   let [playerScore, setPlayerScore] = useState(0);
+  // let [rolls, setRolls] = useState([]);
   const listButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -84,22 +85,35 @@ const PlayerBoard = () => {
         // Get the number of pins knocked down
         const currRoll = document.getElementById('F' + frame + 'r2');
         currRoll.value = parseInt(e.target.value);
-        currRoll.innerText =  currRoll.value;
+        if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r1').value) === 10) {
+          currRoll.innerText = "/";
+        } else {
+          currRoll.innerText =  currRoll.value;
+        }
         let carryOverVal = 0;
-
-        // If there was a strike in the previous frame or if it is the final frame 
-        // and there was a strike in the previous frame
-        if (strike) {
-          if (frame !== 10 || prevStrike) {
+        
+        if (frame !== 10) {
+          if (strike) {
             let prevFrameNo = frame - 1;
             const prevFrame = document.getElementById('F' + prevFrameNo + 'score');
             prevFrame.value = prevFrame.value + currRoll.value;
             prevFrame.innerText = playerScore + prevFrame.value;
             carryOverVal = prevFrame.value;
+            setStrike(false);
           } 
-          setStrike(false);
+        } else {
+          // If it is the second roll of frame 10, check if the previous frame was a strike
+          let prevFrameNo = frame - 1;
+          if(parseInt(document.getElementById('F' + prevFrameNo + 'r1').value) === 10) {
+            const prevFrame = document.getElementById('F' + prevFrameNo + 'score');
+            prevFrame.value = prevFrame.value + currRoll.value;
+            prevFrame.innerText = playerScore + prevFrame.value;
+            carryOverVal = prevFrame.value;
+            setStrike(false);
+          }
         }
-  
+        
+
         // Update the current frame value
         let r1Val = parseInt(document.getElementById('F' + frame + 'r1').value);
         let r2Val = parseInt(document.getElementById('F' + frame + 'r2').value);
@@ -142,21 +156,26 @@ const PlayerBoard = () => {
 
       // If this is the additional roll in the last frame 
     } else {
-      const currRoll = document.getElementById('F' + frame + 'r3');
-      currRoll.value = parseInt(e.target.value);
-      currRoll.innerText = currRoll.value;
-
-      const frameScore = document.getElementById('F' + frame + 'score');
+      if ((parseInt(e.target.value) + parseInt(document.getElementById('F' + frame + 'r2').value) > 10) && parseInt(document.getElementById('F' + frame + 'r2').value) !== 10 && !spare) {
+        document.getElementById('thisframe').innerText = "Invalid Input";
       
-      if (spare || strike) {
-        frameScore.value = frameScore.value + currRoll.value; 
+      } else {
+        const currRoll = document.getElementById('F' + frame + 'r3');
+        currRoll.value = parseInt(e.target.value);
+        currRoll.innerText = currRoll.value;
+
+        const frameScore = document.getElementById('F' + frame + 'score');
+        
+        if (spare || strike) {
+          frameScore.value = frameScore.value + currRoll.value; 
+        }
+
+        frameScore.innerText = playerScore + frameScore.value;
+        setPlayerScore(playerScore + frameScore.value);
+        
+        document.getElementById('thisframe').innerText = "End Game. You scored " + frameScore.innerText + ".";
+        listButtons.map(ea => document.getElementById(ea).disabled = true);
       }
-
-      frameScore.innerText = playerScore + frameScore.value;
-      setPlayerScore(playerScore + frameScore.value);
-      
-      document.getElementById('thisframe').innerText = "End Game. You scored " + frameScore.innerText + ".";
-      listButtons.map(ea => document.getElementById(ea).disabled = true);
     }
   }
 
