@@ -1,12 +1,14 @@
 import './App.css';
 import React, { useState } from 'react';
 
+const listButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 const PlayerBoard = () => {
   let [frame, setFrame] = useState(1);
   let [roll, setRoll] = useState(1);
   let [playerScore, setPlayerScore] = useState(0);
-  const listButtons = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  const frames = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
 
   let [strike, setStrike] = useState(false);
   let [prevStrike, setPrevStrike] = useState(false);
@@ -19,7 +21,11 @@ const PlayerBoard = () => {
       // Get the number of pins knocked down
       const currRoll = document.getElementById('F' + frame + 'r1');
       currRoll.value = parseInt(e.target.value);
-      currRoll.innerText = currRoll.value;
+      if (currRoll.value === 10) {
+        currRoll.innerText = "X";
+      } else {
+        currRoll.innerText =  currRoll.value;
+      }
       
       // If the previous roll was a spare, update the value for the previous roll
       if (spare) {
@@ -86,6 +92,9 @@ const PlayerBoard = () => {
         currRoll.value = parseInt(e.target.value);
         if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r1').value) === 10) {
           currRoll.innerText = "/";
+          //frame === 10 && strike ? currRoll.innerText = currRoll.value : 
+        } else if (frame === 10 && currRoll.value === 10) {
+          currRoll.innerText = "X";
         } else {
           currRoll.innerText =  currRoll.value;
         }
@@ -160,7 +169,13 @@ const PlayerBoard = () => {
       } else {
         const currRoll = document.getElementById('F' + frame + 'r3');
         currRoll.value = parseInt(e.target.value);
-        currRoll.innerText = currRoll.value;
+        if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r2').value) === 10 && spare) {
+          currRoll.innerText = "/";
+        } else if (frame === 10 && currRoll.value === 10) {
+          currRoll.innerText = "X";
+        } else {
+          currRoll.innerText =  currRoll.value;
+        }
 
         const frameScore = document.getElementById('F' + frame + 'score');
         
