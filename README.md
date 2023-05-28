@@ -21,6 +21,9 @@ This project was bootstrapped with Create React App.
 In the project directory, run:
 
 ### `npm install`
+
+This installs a package and any dependencies.
+
 ### `npm start`
 
 This runs the app in the development mode.
