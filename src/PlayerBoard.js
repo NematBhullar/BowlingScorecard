@@ -21,11 +21,11 @@ const PlayerBoard = () => {
       // Get the number of pins knocked down
       const currRoll = document.getElementById('F' + frame + 'r1');
       currRoll.value = parseInt(e.target.value);
-      if (currRoll.value === 10) {
-        currRoll.innerText = "X";
-      } else {
-        currRoll.innerText =  currRoll.value;
-      }
+      // if (currRoll.value === 10) {
+      //   currRoll.innerText = "X";
+      // } else {
+      currRoll.innerText =  currRoll.value;
+      //}
       
       // If the previous roll was a spare, update the value for the previous roll
       if (spare) {
@@ -90,14 +90,13 @@ const PlayerBoard = () => {
         // Get the number of pins knocked down
         const currRoll = document.getElementById('F' + frame + 'r2');
         currRoll.value = parseInt(e.target.value);
-        if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r1').value) === 10) {
-          currRoll.innerText = "/";
-          //frame === 10 && strike ? currRoll.innerText = currRoll.value : 
-        } else if (frame === 10 && currRoll.value === 10) {
-          currRoll.innerText = "X";
-        } else {
-          currRoll.innerText =  currRoll.value;
-        }
+        // if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r1').value) === 10 && currRoll.value !== 0) {
+        //   currRoll.innerText = "/";
+        // } else if (frame === 10 && currRoll.value === 10) {
+        //   currRoll.innerText = "X";
+        // } else {
+        currRoll.innerText =  currRoll.value;
+        //}
         let carryOverVal = 0;
         
         if (frame !== 10) {
@@ -169,13 +168,13 @@ const PlayerBoard = () => {
       } else {
         const currRoll = document.getElementById('F' + frame + 'r3');
         currRoll.value = parseInt(e.target.value);
-        if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r2').value) === 10 && spare) {
-          currRoll.innerText = "/";
-        } else if (frame === 10 && currRoll.value === 10) {
-          currRoll.innerText = "X";
-        } else {
-          currRoll.innerText =  currRoll.value;
-        }
+        // if (currRoll.value + parseInt(document.getElementById('F' + frame + 'r2').value) === 10 && spare) {
+        //   currRoll.innerText = "/";
+        // } else if (frame === 10 && currRoll.value === 10) {
+        //   currRoll.innerText = "X";
+        // } else {
+        currRoll.innerText =  currRoll.value;
+        //}
 
         const frameScore = document.getElementById('F' + frame + 'score');
         
